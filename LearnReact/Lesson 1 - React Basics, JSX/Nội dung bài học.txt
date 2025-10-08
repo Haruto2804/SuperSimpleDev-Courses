@@ -1,0 +1,3 @@
+1/ Render HTML = Create
+cú pháp: ReactDOM.createRoot(<vùng cần render>).render(<thứ cần render(có thể là 1 bien chua html, hoac la string,....)>)
+- Nhưng cách này ko hiệu quả vì chỉ có thể render duy nhất 1 phần tử thôi, do đó để có thể render nhiều phẩn tử thì ta chỉ cần bọc các phần tử html vào khối div gán cho nó 1 biến truyền vào cú pháp render trên là được, xem chi tiết trong file thực hành.
