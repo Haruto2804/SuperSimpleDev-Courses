@@ -10,7 +10,7 @@ React trong khóa học
 thay vì JS bình thường
 - Có 1 vấn đề với JSX: Web browser ko hiểu về JSX, 
 vì thế ta cần phải biến đổi JSX thành JS để web browser hiểu code đó là gì, do đó ta cần cài Babel = biên dịch JSX sang JS để Web Browser hiểu
-
+- Insert Value into JS code 
 
 </script>
 
