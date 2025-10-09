@@ -1,0 +1,4 @@
+- Quy tắc tạo component:
+function <Tên component>() {return html}
+Lưu ý: tên component viết hoa chữ cái đầu mỗi từ phải viết hoa
+- trong JSX, ta có <input></input>, ta có thể viết tắt thành <input/> đây là self closing element.

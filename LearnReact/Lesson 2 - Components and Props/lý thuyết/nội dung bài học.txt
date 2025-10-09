@@ -1,0 +1,143 @@
+Chắc chắn rồi\! Hãy cùng tìm hiểu về **props** trong React, một trong những khái niệm cốt lõi và quan trọng nhất.
+
+Hiểu đơn giản, **props** (viết tắt của "properties") là một cách để truyền dữ liệu từ component cha xuống component con. Nó giống như cách bạn truyền tham số cho một hàm trong JavaScript. Dữ liệu này có tính "chỉ đọc" (read-only), nghĩa là component con không thể tự thay đổi props mà nó nhận được.
+
+-----
+
+### \#\# Tại Sao Lại Cần Props?
+
+Hãy tưởng tượng bạn đang xây dựng một ứng dụng mạng xã hội. Bạn có một component `UserProfile` để hiển thị thông tin người dùng. Thay vì tạo ra các component riêng lẻ như `UserProfileTuan`, `UserProfileLinh`, bạn chỉ cần tạo một component `UserProfile` duy nhất và tái sử dụng nó. Props cho phép bạn truyền dữ liệu khác nhau (như tên, tuổi, ảnh đại diện) vào component `UserProfile` đó để hiển thị thông tin cho từng người dùng cụ thể.
+
+Điều này giúp code của bạn:
+
+  * **Tái sử dụng được (Reusable):** Dùng một component cho nhiều mục đích khác nhau.
+  * **Dễ bảo trì (Maintainable):** Chỉ cần sửa logic ở một nơi duy nhất.
+  * **Có tính động (Dynamic):** Dữ liệu được truyền từ bên ngoài, giúp component trở nên linh hoạt.
+
+-----
+
+### \#\# Cách Hoạt Động
+
+Quá trình truyền và nhận props gồm hai bước chính:
+
+#### 1\. Truyền Props từ Component Cha
+
+Bạn truyền props cho component con dưới dạng các thuộc tính (attributes) trong JSX, tương tự như cách bạn viết thuộc tính cho thẻ HTML.
+
+**Ví dụ:** Component `App` (cha) truyền dữ liệu cho component `Welcome` (con).
+
+```jsx
+// Trong file App.js (Component Cha)
+
+import React from 'react';
+import Welcome from './Welcome'; // Import component con
+
+function App() {
+  return (
+    <div>
+      <h1>Chào mừng đến với trang của tôi!</h1>
+      {/* Truyền prop "name" với giá trị "Alice" */}
+      <Welcome name="Alice" />
+      {/* Tái sử dụng component với prop khác */}
+      <Welcome name="Bob" />
+    </div>
+  );
+}
+
+export default App;
+```
+
+Trong ví dụ trên:
+
+  * Chúng ta gọi component `<Welcome ... />`.
+  * Chúng ta thêm một thuộc tính là `name="Alice"`. Ở đây, `name` là tên của prop và `"Alice"` là giá trị của nó.
+
+#### 2\. Nhận và Sử dụng Props trong Component Con
+
+Component con nhận các props này dưới dạng một đối tượng (object). Thông thường, đối tượng này được đặt tên là `props`. Bạn có thể truy cập các giá trị bằng cách dùng cú pháp `props.tenProp`.
+
+**Ví dụ:** Component `Welcome` (con) nhận và hiển thị prop.
+
+```jsx
+// Trong file Welcome.js (Component Con)
+
+import React from 'react';
+
+// props là một object chứa tất cả các thuộc tính được truyền vào
+function Welcome(props) {
+  // props sẽ là { name: "Alice" } hoặc { name: "Bob" }
+  return <h2>Chào bạn, {props.name}!</h2>;
+}
+
+export default Welcome;
+```
+
+Kết quả hiển thị trên trình duyệt sẽ là:
+
+```html
+<h1>Chào mừng đến với trang của tôi!</h1>
+<h2>Chào bạn, Alice!</h2>
+<h2>Chào bạn, Bob!</h2>
+```
+
+-----
+
+### \#\# Các Loại Dữ Liệu Có Thể Truyền Qua Props
+
+Bạn có thể truyền gần như mọi loại dữ liệu trong JavaScript qua props, không chỉ là chuỗi (string):
+
+  * **String:** `<UserProfile name="John Doe" />`
+  * **Number:** `<Product price={99.99} />` (Lưu ý dấu `{}` để báo cho JSX biết đây là một biểu thức JavaScript).
+  * **Boolean:** `<Button isDisabled={true} />`
+  * **Array:** `<TodoList tasks={['Học React', 'Đi chợ']} />`
+  * **Object:** `<UserInfo user={{ name: 'Jane', age: 30 }} />`
+  * **Function:** `<Button onClick={handleLogin} />` (Đây là một cách rất phổ biến để component con có thể "giao tiếp" ngược lại với component cha).
+
+#### Ví dụ nâng cao: Truyền nhiều props
+
+```jsx
+// Component Cha
+function App() {
+  const user = {
+    name: "Catherine",
+    avatarUrl: "https://i.imgur.com/yXOvdOSs.jpg",
+    age: 28
+  };
+
+  return (
+    <UserInfo profile={user} posts={15} />
+  );
+}
+
+// Component Con
+function UserInfo(props) {
+  return (
+    <div>
+      <img src={props.profile.avatarUrl} alt={props.profile.name} />
+      <h3>Tên: {props.profile.name}</h3>
+      <p>Tuổi: {props.profile.age}</p>
+      <p>Số bài đăng: {props.posts}</p>
+    </div>
+  );
+}
+```
+
+Trong ví dụ này, `UserInfo` nhận được một object `props` trông như sau:
+`{ profile: { name: 'Catherine', ... }, posts: 15 }`
+
+### \#\# Điểm Quan Trọng Cần Nhớ
+
+1.  **Props là Read-Only:** Component con **không được phép** thay đổi props. Đây là nguyên tắc cốt lõi của React. Nếu bạn cần thay đổi dữ liệu, bạn phải sử dụng `state` trong component cha và truyền `state` đó xuống làm `prop`.
+
+2.  **Luồng dữ liệu một chiều:** Dữ liệu trong React luôn chảy từ trên xuống (từ cha xuống con). Điều này giúp ứng dụng dễ dự đoán và gỡ lỗi hơn.
+
+3.  **Destructuring props:** Để code gọn hơn, bạn có thể sử dụng "destructuring" để lấy trực tiếp các giá trị từ object `props`.
+
+    ```jsx
+    // Thay vì function Welcome(props) { ... }
+    function Welcome({ name }) { // Destructuring ngay tại tham số
+      return <h2>Chào bạn, {name}!</h2>;
+    }
+    ```
+
+Props là một khái niệm nền tảng. Khi bạn đã nắm vững cách hoạt động của nó, bạn sẽ có thể xây dựng các ứng dụng React phức tạp và có cấu trúc tốt. Chúc bạn học tốt\!
