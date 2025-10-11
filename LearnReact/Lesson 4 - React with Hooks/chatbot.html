@@ -1,12 +1,76 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Chatbot Project - 3l,3m</title>
+    <title>Chatbot Project - Lesson 4</title>
     <style>
+      body {
+        font-family: Arial;
+        margin: 0;
+      }
       .send-button {
         background-color: green;
+        color: white;
+        padding: 12px 20px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
       }
-
+      .send-button:active {
+        transform: scale(0.95);
+      }
+      .chat-input {
+        padding: 12px 15px;
+        border-radius: 10px;
+        border-width: 1px;
+        font-size: 15px;
+        flex-grow: 1;
+      }
+      .chat-input-container {
+        display: flex;
+        margin-bottom: 60px;
+      }
+      .app-container {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto; 
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-message-user {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: end;
+        align-items: start;
+        object-fit: contain;
+        margin-top: 20px;
+      }
+      .chat-message-robot {
+        display: flex;
+        align-items: start;    
+      }
+      .chat-message-robot img {
+          width: 45px;
+      }
+      .chat-message-user img {
+          width: 45px;
+      }
+      .chat-message-text {
+        background-color: rgb(238,238,238);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 20px;
+        max-width: 300px;
+      }
+      .chat-history-container {
+        flex-grow: 1;
+        overflow: scroll;
+        scrollbar-width: none;
+      }
     </style>
   </head>
   <body>
@@ -73,8 +137,8 @@
           }
         }
         return (
-          <div>
-            <input 
+          <div class = "chat-input-container">
+            <input className = "chat-input"
               placeholder ="Send a message to chatbot" 
               size = "30"
               onChange ={saveInputText}
@@ -91,27 +155,18 @@
         );
     }
       function ChatMessage ({message,sender}) {
-        // const message = props.message;
-        // const sender = props.sender;
-        //  const {message, sender} = props; //destructing syntax: shortcut
-
-       /*
-        if(sender === 'robot') {
-          return (
-          <div>
-            <img src = "picture-profile/robot.png" width = "50"/>
-            {message}
-          </div>
-        )
-        }
-        */
         return (
-          <div>
+          <div className = {sender === 
+          'user' ? 'chat-message-user' : 
+          'chat-message-robot'}>
             {sender === 'robot' && (
-              <img src = "picture-profile/robot.png" width = "50"/>)}
-            {message}
+              <img src = "picture-profile/robot.png"/>)}
+            <div className = "chat-message-text">
+                {message}
+            </div>
+            
             {sender === 'user' && (
-              <img src = "picture-profile/user.png" width = "50"/>)}
+              <img src = "picture-profile/user.png" />)}
 
           </div>
         )
@@ -119,16 +174,16 @@
 
       
       function ChatHistory ({chatMessages}) {
-        //SHORTCUT1
-        
-      
-        //SHORTCUTt2
-        //const [chatMessages, setChatMessages] = array;
-
-        // const chatMessages = array[0];
-        // const setChatMessages = array[1];
+        const chatMessageRef = React.useRef(null);
+        React.useEffect(()=> {
+          const containerElement = chatMessageRef.current;
+          if(containerElement) {
+            containerElement.scrollTop = containerElement.scrollHeight;
+          }
+        }, [chatMessages]); 
         return (
-          <>
+          <div className = "chat-history-container"
+          ref={chatMessageRef}>
                 {chatMessages.map((chatMessage)=> {
                     return (
                       <ChatMessage 
@@ -140,7 +195,7 @@
         
             })
           }
-          </>
+          </div>
           )
       }
       function App () {
@@ -148,13 +203,13 @@
         
         
         return (
-        <div>
-          <ChatInput
-          chatMessage = {chatMessages}
-          setChatMessages = {setChatMessages}
-          />
+        <div className = "app-container">
           <ChatHistory
           chatMessages = {chatMessages}
+          />
+            <ChatInput
+          chatMessage = {chatMessages}
+          setChatMessages = {setChatMessages}
           />
         </div>
       )
