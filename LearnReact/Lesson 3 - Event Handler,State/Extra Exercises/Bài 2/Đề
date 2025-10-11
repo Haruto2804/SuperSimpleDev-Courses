@@ -1,0 +1,12 @@
+Bài 3: Danh sách việc cần làm (Todo List) ✅
+Bài tập này nâng cao hơn, yêu cầu bạn quản lý một state là mảng các đối tượng.
+
+Yêu cầu:
+
+Tạo một component TodoList.
+
+Hiển thị một danh sách các công việc. Mỗi công việc là một mục trong danh sách.
+
+Tạo một ô input và một nút "Thêm". Khi người dùng nhập công việc và nhấn "Thêm", công việc đó sẽ được thêm vào cuối danh sách.
+
+Bên cạnh mỗi công việc, có một nút "Xóa". Khi nhấn vào, công việc tương ứng sẽ bị xóa khỏi danh sách.

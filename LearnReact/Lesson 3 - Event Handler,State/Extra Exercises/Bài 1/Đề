@@ -1,0 +1,20 @@
+## Bài 2: Quản lý Form Input 📝
+Bài tập này giúp bạn luyện tập "two-way data binding" - liên kết giá trị của state với một ô input.
+
+Yêu 
+Bạn cần hai state, một cho usecầu:
+
+Tạo một component LoginForm.
+
+Tạo hai ô input: một cho "Tên đăng nhập" và một cho "Mật khẩu".
+
+Khi người dùng gõ vào bất kỳ ô input nào, nội dung họ gõ phải được hiển thị ngay bên dưới form.
+
+Tạo một nút "Xóa" để xóa sạch nội dung trong cả hai ô input.
+
+Gợi ý:
+rname và một cho password.
+
+Sử dụng thuộc tính value và sự kiện onChange trên thẻ <input>.
+
+Hàm onChange sẽ nhận event và bạn sẽ dùng event.target.value để cập nhật state.

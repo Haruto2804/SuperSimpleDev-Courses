@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Extra Exercise - 1</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script src = "react-bacics.js" ></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector('.js-container');
+
+
+
+      function Display ({inputUsername, inputPassword}) {
+        return (
+          <>
+            <p>Thông tin đăng nhập: </p>
+            <p>Tên đăng nhập: {inputUsername}</p>
+            <p>Mật khẩu: {inputPassword}</p>
+          </>
+        )
+
+      }
+
+
+
+
+
+      function LoginForm ({inputUsername,setUsername,inputPassword,setPassword}) {
+
+        function handleUserName (e) {
+          setUsername(e.target.value);
+  
+        }
+
+
+        function handlePassword (e) {
+          setPassword(e.target.value);
+          
+        }
+
+
+        return (
+          <>
+            <div>  
+              <input type="text" placeholder = "Username" 
+              onChange = {handleUserName}
+              value = {inputUsername}
+              />
+            </div>
+          
+            <div>
+              <input type="text" placeholder = "Password"
+              onChange = {handlePassword}
+              value = {inputPassword}
+              />
+            </div>
+            
+          </>
+        )
+      }
+
+
+
+
+      function App () {
+        const [userName,setUsername] = React.useState ('');
+        const [password, setPassword] = React.useState('');
+        return (
+          <>
+                <LoginForm
+                inputUsername = {userName}
+                setUsername = {setUsername}
+                inputPassword = {password}
+                setPassword = {setPassword}
+                />
+
+                
+                <Display 
+                inputUsername = {userName}
+                inputPassword = {password}
+                />
+                
+            </>
+        )
+      }
+      ReactDOM.createRoot (container). render (<App />)
+    </script>
+  </body>
+</html>
