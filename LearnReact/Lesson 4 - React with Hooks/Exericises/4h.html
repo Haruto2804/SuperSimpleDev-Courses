@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>4g</title>
+    <style>
+      body {
+        font-family: Arial;
+        margin: 0;
+      }
+      .counter-container {
+        display: flex;
+        gap: 10px;
+        height: 100vh;
+        background-color: rgb( 222,222,222);
+        align-items: center;
+        justify-content: center;
+      }
+      .counter-container button {
+        flex-shrink: 0;
+        background-color:  rgb(25,135,84);
+        border: none;
+        color: white;
+        
+        padding: 10px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script src = "https://unpkg.com/supersimpledev/react-bacics.js" ></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src = "https://unpkg.com/supersimpledev/chatbot.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script type="text/babel">
+      
+
+
+
+
+      function Counter ({count,setCount,buttonRef}) {
+        function handleCounter () {
+          setCount (count+1);
+        }
+        return (
+          <>
+              <button ref={buttonRef}
+              onClick = {handleCounter}
+              >Clicked {count} {count > 1 ? 'times' : 'time'}</button>
+          </>
+        )
+        
+      }
+
+      function App () { // COUNTER
+        const [count,setCount] = React.useState(0);
+        const [isAutoPlay,setIsAutoPlay] = React.useState(false);
+        const buttonRef = React.useRef();
+
+
+
+
+        function switchAuto () {
+          if(isAutoPlay) {
+            setIsAutoPlay(false);
+          }else {
+            setIsAutoPlay(true);
+          }
+        }
+
+
+
+        function handleReset () {
+          setCount(0);
+        }
+        
+        function handleAutoClick () {
+          setIsAutoPlay (isAutoPlay => !isAutoPlay)
+        }
+
+          React.useEffect (()=> {
+            if(isAutoPlay) {
+              const intervalId = setInterval (()=> {
+              const buttonElement = buttonRef.current;
+              if(buttonElement) {
+                buttonElement.click();
+              }
+              },1000) 
+                return ()=> {
+                  clearInterval(intervalId)
+              }
+          } 
+              return undefined;
+          },[isAutoPlay])
+          
+        return (
+          <div className = "counter-container">
+            <Counter
+            buttonRef = {buttonRef}
+            count = {count}
+            setCount = {setCount}
+            />
+            <button onClick = {handleReset}>Reset</button>
+            <button
+            onClick = {handleAutoClick} > {isAutoPlay ? 'Turn off Auto Click' : 'Turn on Auto Click' }</button>
+          </div>
+        )
+      }
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render (<App />)
+    </script>
+  </body>
+</html>
+

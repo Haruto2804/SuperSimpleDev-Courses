@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>4g</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <script src = "https://unpkg.com/supersimpledev/react-bacics.js" ></script>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src = "https://unpkg.com/supersimpledev/chatbot.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script type="text/babel">
+      
+
+      function Clock () {
+        const [time,setTime] = React.useState(
+        dayjs().format('HH:mm:ss'));
+            React.useEffect (()=> { // WHEN COMPONENT HAS CREATE COMPLETELY, RUN THIS CODE
+              setInterval (()=> {
+                console.log('run code');
+                setTime ( dayjs().format('HH:mm:ss'));
+                
+              },1000)
+
+
+              
+            },[]) // Because we have the dependency array is empty, so it will be run once when component create !
+        return (
+          <>
+            current Time: {time}
+          </>
+        )
+      }
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render (<Clock />)
+    </script>
+  </body>
+</html>
+
+
+<!-- NHAN XET
+React.useEffect(() => {
+  // Hàm này chạy SAU MỖI LẦN RENDER
+  setInterval(() => {
+    console.log('run code');
+    setTime(dayjs().format('HH:mm:ss'));
+  }, 1000);
+}); // Không có mảng phụ thuộc
+Luồng hoạt động (Vòng lặp vô tận):
+
+Lần render 1: Component Clock mount.
+
+useEffect chạy. Nó tạo ra một setInterval (ID: 1).
+
+Sau 1 giây: setInterval (ID: 1) gọi setTime().
+
+Việc gọi setTime() làm state thay đổi, khiến component Clock render lại.
+
+Lần render 2: useEffect lại chạy vì không có mảng phụ thuộc. Nó tạo thêm một setInterval mới (ID: 2). Bây giờ chúng ta có 2 interval đang chạy song song! 🐛
+
+Sau 1 giây nữa: Cả setInterval (ID: 1) và (ID: 2) đều gọi setTime(). Component lại render lại.
+
+Lần render 3: useEffect lại chạy, tạo thêm setInterval (ID: 3)...
+
+Hậu quả:
+
+Bạn tạo ra một setInterval mới sau mỗi lần render mà không bao giờ hủy những cái cũ.
+
+Sau vài giây, bạn sẽ có hàng chục, hàng trăm interval chạy cùng lúc.
+
+Điều này gây ra rò rỉ bộ nhớ nghiêm trọng và làm ứng dụng của bạn bị treo (crash) vì phải thực hiện quá nhiều tác vụ cùng lúc. -->
