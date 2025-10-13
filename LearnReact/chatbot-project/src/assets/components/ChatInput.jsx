@@ -4,9 +4,6 @@ import LoadingSpinnerImage from '../loading-spinner.gif'
 import './ChatInput.css';
 
 
-
-
-
 export function ChatInput ({chatMessage, setChatMessages}) {
         const [inputText,setInputText] = useState ('');
         const [isLoading,setIsLoading] = useState (false);
@@ -81,3 +78,5 @@ export function ChatInput ({chatMessage, setChatMessages}) {
          </div>
         );
 } 
+
+export default ChatInput
