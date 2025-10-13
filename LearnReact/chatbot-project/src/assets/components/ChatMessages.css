@@ -17,6 +17,13 @@
   .chat-message-user img {
       width: 45px;
   }
+  .chat-message-haruto-picture {
+    height:45px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+  
+  }
   .chat-message-text {
     background-color: rgb(238,238,238);
     padding: 15px 20px;

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { Chatbot } from 'supersimpledev'
 import LoadingSpinnerImage from '../loading-spinner.gif'
 import './ChatInput.css';
@@ -80,4 +80,4 @@ export function ChatInput ({chatMessage, setChatMessages}) {
             >Send</button>
          </div>
         );
-}
+} 

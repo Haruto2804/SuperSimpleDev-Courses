@@ -1,6 +1,5 @@
 import {useEffect, useRef } from 'react'
 import ChatMessage from './ChatMessage'
-import 'ChatHistory.css'
   export function ChatHistory ({chatMessages}) {
     const chatMessageRef = useAutoScroll(chatMessages)
     function useAutoScroll (dependencies) {
