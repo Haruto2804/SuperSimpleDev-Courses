@@ -1,0 +1,30 @@
+Khi bạn tạo một dự án mới bằng Vite, nó sẽ tạo ra một cấu trúc tệp và thư mục tiêu chuẩn. Dưới đây là ý nghĩa của từng thành phần quan trọng nhất.
+
+***
+
+### ## Tệp Tin ở Thư Mục Gốc
+
+Đây là những tệp tin và thư mục nằm ngay bên ngoài cùng của dự án.
+
+* 📁 **`node_modules`**: Chứa tất cả các thư viện và gói (packages) mà dự án của bạn cần để hoạt động. Thư mục này được tạo tự động khi bạn chạy `npm install` và thường có dung lượng rất lớn. Bạn không bao giờ cần chỉnh sửa trực tiếp thư mục này.
+
+* 📁 **`public`**: Chứa các tệp tĩnh (static assets) sẽ không được xử lý bởi Vite. Bất cứ thứ gì bạn đặt ở đây (ví dụ: `favicon.ico`, `robots.txt`, logo) sẽ được sao chép thẳng vào thư mục build cuối cùng và có thể được truy cập trực tiếp từ trình duyệt.
+
+* 📁 **`src`** (Source): Đây là thư mục quan trọng nhất, nơi bạn sẽ viết hầu hết code cho ứng dụng của mình. Tất cả các tệp JavaScript, CSS, và các component (React, Vue, v.v.) đều nằm trong này.
+    * 📄 **`main.js`** hoặc **`main.jsx`** (hoặc `.ts`/`.tsx`): Đây là **điểm khởi đầu** (entry point) của ứng dụng. Vite bắt đầu đọc code từ tệp này để xây dựng toàn bộ ứng dụng của bạn. Nó thường có nhiệm vụ "gắn" component chính (như `App.jsx`) vào tệp `index.html`.
+    * 📄 **`App.jsx`** (hoặc `App.vue`): Component gốc, là thành phần cha chứa tất cả các phần khác của giao diện người dùng.
+    * 📄 **`index.css`**: Tệp CSS toàn cục, dùng để định nghĩa các kiểu (style) chung cho toàn bộ trang web.
+
+* 📄 **`.gitignore`**: Một tệp cấu hình cho Git (hệ thống quản lý phiên bản). Nó liệt kê các tệp và thư mục mà Git nên **bỏ qua**, không theo dõi và không đưa lên kho lưu trữ (repository). Ví dụ quan trọng nhất là `node_modules`.
+
+* 📄 **`index.html`**: Tệp HTML duy nhất của ứng dụng. Không giống như các trang web truyền thống, đây chỉ là một "vỏ" chứa một thẻ `<div id="root"></div>` (hoặc tương tự). Vite sẽ tự động chèn code JavaScript đã được xử lý của bạn vào tệp này để ứng dụng có thể chạy.
+
+* 📄 **`package.json`**: Có thể coi là "chứng minh thư" của dự án. Nó chứa các siêu dữ liệu quan trọng:
+    * **`name`**: Tên dự án.
+    * **`dependencies`**: Danh sách các thư viện cần thiết để ứng dụng chạy trên môi trường production (ví dụ: `react`, `react-dom`).
+    * **`devDependencies`**: Danh sách các công cụ chỉ cần cho quá trình phát triển (ví dụ: `vite`, `eslint`).
+    * **`scripts`**: Các lệnh tắt để chạy các tác vụ phổ biến như `npm run dev` (khởi động server phát triển) hoặc `npm run build` (tạo phiên bản cuối cùng để triển khai).
+
+* 📄 **`package-lock.json`**: Tệp này được tạo tự động bởi `npm`. Nó "khóa" phiên bản chính xác của mọi thư viện đã được cài đặt, đảm bảo rằng tất cả các nhà phát triển trong nhóm đều sử dụng cùng một phiên bản, tránh gây ra lỗi không tương thích.
+
+* 📄 **`vite.config.js`** (hoặc `.ts`): Tệp cấu hình cho chính Vite. Tại đây, bạn có thể tùy chỉnh hành vi của Vite, ví dụ như thêm các plugin, thiết lập proxy cho server, hoặc thay đổi cổng mặc định. Đối với các dự án đơn giản, bạn có thể không cần chỉnh sửa tệp này.
