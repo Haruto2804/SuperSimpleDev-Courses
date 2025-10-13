@@ -59,6 +59,12 @@ export function ChatInput ({chatMessage, setChatMessages}) {
            setInputText(''); 
           }
         }
+        function handleClear () {
+          setChatMessages([]);
+          if(localStorage.getItem('message')) {
+            localStorage.setItem('message',JSON.stringify[chatMessage])
+          }
+        }
         return (
           <div className = "chat-input-container">
             <input className = "chat-input"
@@ -75,6 +81,11 @@ export function ChatInput ({chatMessage, setChatMessages}) {
             disabled = {isLoading}
             className = "send-button"
             >Send</button>
+            <button
+            onClick = {handleClear}
+            disabled = {isLoading}
+            className = "send-button"
+            >Clear</button>
          </div>
         );
 } 
