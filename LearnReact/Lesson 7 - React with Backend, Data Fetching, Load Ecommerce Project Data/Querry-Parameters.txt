@@ -1,0 +1,74 @@
+`expand=product` là một **tham số truy vấn (query parameter)** mà bạn gửi lên cho API backend. Nó không phải là một tính năng của React hay Axios, mà là một quy ước do người viết backend định ra.
+
+Nói một cách đơn giản, nó là một yêu cầu: "Khi bạn lấy danh sách các món hàng trong giỏ (`cart-items`), hãy **kèm theo (mở rộng - expand) luôn cả thông tin chi tiết của sản phẩm (`product`)** tương ứng với mỗi món hàng đó."
+
+-----
+
+### 🤔 Tại sao lại cần dùng `expand`? (Để giải quyết vấn đề N+1)
+
+Hãy xem 2 kịch bản để thấy sự khác biệt rõ rệt. Giả sử bạn có 3 sản phẩm trong giỏ hàng.
+
+#### Kịch bản 1: Không dùng `expand` (Cách làm tệ 🐢)
+
+Nếu bạn chỉ gọi `axios.get('/api/cart-items')`, backend sẽ chỉ trả về thông tin cơ bản của giỏ hàng, ví dụ:
+
+```json
+[
+  { "cartItemId": 1, "productId": "abc", "quantity": 2 },
+  { "cartItemId": 2, "productId": "xyz", "quantity": 1 },
+  { "cartItemId": 3, "productId": "fgh", "quantity": 5 }
+]
+```
+
+Lúc này, bạn chỉ có `productId` chứ không có tên, giá, hay hình ảnh sản phẩm. Để hiển thị đầy đủ, bạn phải **tiếp tục gọi API thêm 3 lần nữa** để lấy thông tin cho từng sản phẩm:
+
+1.  `axios.get('/api/products/abc')`
+2.  `axios.get('/api/products/xyz')`
+3.  `axios.get('/api/products/fgh')`
+
+Tổng cộng: bạn phải thực hiện **1 + 3 = 4 lần gọi API** (1 lần lấy giỏ hàng + N lần lấy từng sản phẩm). Đây gọi là "vấn đề N+1", nó rất chậm và không hiệu quả.
+
+#### Kịch bản 2: Dùng `expand=product` (Cách làm tốt 🚀)
+
+Khi bạn gọi `axios.get('/api/cart-items?expand=product')`, bạn đang ra lệnh cho backend làm thêm việc. Backend sẽ hiểu và trả về một kết quả đã "gộp" sẵn thông tin sản phẩm vào bên trong:
+
+```json
+[
+  {
+    "cartItemId": 1,
+    "quantity": 2,
+    "product": { // <-- Thông tin sản phẩm đã được "expand" ở đây
+      "productId": "abc",
+      "name": "Áo Thun Cao Cấp",
+      "price": 350000,
+      "imageUrl": "/images/ao-thun.jpg"
+    }
+  },
+  {
+    "cartItemId": 2,
+    "quantity": 1,
+    "product": { // <-- Và ở đây
+      "productId": "xyz",
+      "name": "Quần Jean Rách Gối",
+      "price": 550000,
+      "imageUrl": "/images/quan-jean.jpg"
+    }
+  }
+]
+```
+
+Với cách này, bạn chỉ cần **duy nhất 1 lần gọi API** là đã có đủ tất cả dữ liệu cần thiết để hiển thị.
+
+-----
+
+### ✅ Khi nào nên dùng `?expand=product`?
+
+Bạn nên dùng nó **khi bạn cần hiển thị thông tin của đối tượng chính (giỏ hàng) VÀ thông tin chi tiết của đối tượng liên quan (sản phẩm) trên cùng một giao diện.**
+
+Ví dụ điển hình nhất chính là trang giỏ hàng: bạn cần hiển thị tên, hình ảnh, giá của sản phẩm ngay cạnh số lượng của món hàng đó.
+
+### Tóm tắt
+
+  * `expand=product` là một **chỉ thị cho backend**.
+  * Nó yêu cầu backend trả về thêm dữ liệu của các đối tượng liên quan trong cùng một lượt gọi API.
+  * Nó giúp giải quyết **vấn đề N+1**, làm cho ứng dụng nhanh hơn, hiệu quả hơn và code frontend đơn giản hơn rất nhiều.

@@ -1,0 +1,239 @@
+Chắc chắn rồi\! Dưới đây là hướng dẫn chi tiết và đầy đủ về Axios, từ khái niệm cơ bản, cách cài đặt cho đến các ví dụ sử dụng từ đơn giản đến nâng cao.
+
+-----
+
+### Axios là gì?
+
+**Axios** là một thư viện JavaScript mạnh mẽ và dễ sử dụng, dùng để thực hiện các yêu cầu HTTP (HTTP requests). Nó hoạt động được trên cả trình duyệt (client-side) và trong môi trường Node.js (server-side).
+
+Về cơ bản, nó giúp bạn gửi yêu cầu đến một máy chủ (server) để lấy dữ liệu (GET), gửi dữ liệu mới (POST), cập nhật dữ liệu (PUT/PATCH), hoặc xóa dữ liệu (DELETE).
+
+### Tại sao nên dùng Axios? (Các tính năng nổi bật)
+
+So với API `fetch` có sẵn trong trình duyệt, Axios cung cấp nhiều tiện ích hơn:
+
+  * **API dựa trên Promise:** Giúp viết mã bất đồng bộ một cách dễ dàng và dễ đọc hơn, đặc biệt khi kết hợp với `async/await`.
+  * **Tự động chuyển đổi dữ liệu JSON:** Axios tự động chuyển đổi dữ liệu gửi đi thành chuỗi JSON và tự động phân tích dữ liệu JSON trả về. Với `fetch`, bạn phải làm việc này thủ công.
+  * **Xử lý lỗi tốt hơn:** Axios bắt tất cả các lỗi HTTP (như 404, 500) trong khối `.catch()`, giúp việc xử lý lỗi nhất quán hơn. `fetch` chỉ coi lỗi mạng là lỗi thực sự.
+  * **Interceptors (Bộ chặn):** Cho phép bạn "chặn" các yêu cầu (requests) hoặc phản hồi (responses) trước khi chúng được xử lý. Rất hữu ích để thêm token xác thực, ghi log, hoặc xử lý lỗi tập trung.
+  * **Hủy bỏ yêu cầu:** Cung cấp cơ chế để hủy bỏ một yêu cầu đang chờ xử lý.
+  * **Tương thích rộng rãi:** Hoạt động trên hầu hết các trình duyệt hiện đại và cả Node.js.
+  * **Bảo vệ chống lại XSRF:** Tích hợp sẵn cơ chế bảo vệ phía client chống lại tấn công Cross-Site Request Forgery.
+
+### 1\. Cách cài đặt
+
+Bạn có thể cài đặt Axios thông qua các trình quản lý gói phổ biến hoặc sử dụng CDN.
+
+#### a. Sử dụng npm (phổ biến trong các dự án Node.js, React, Vue, Angular...)
+
+Mở terminal trong thư mục dự án của bạn và chạy lệnh:
+
+```bash
+npm install axios
+```
+
+#### b. Sử dụng yarn
+
+Nếu bạn dùng yarn, chạy lệnh:
+
+```bash
+yarn add axios
+```
+
+#### c. Sử dụng CDN (cho các trang web tĩnh hoặc không dùng build tool)
+
+Thêm thẻ `<script>` này vào file HTML của bạn, thường là trước thẻ đóng `</body>`:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+```
+
+### 2\. Cách sử dụng
+
+Sau khi cài đặt, bạn cần import Axios vào file JavaScript của mình.
+
+```javascript
+// Nếu dùng npm/yarn
+import axios from 'axios';
+
+// Nếu dùng thẻ script (CDN), axios sẽ có sẵn dưới dạng biến toàn cục.
+```
+
+#### a. Yêu cầu GET (Lấy dữ liệu)
+
+Đây là loại yêu cầu phổ biến nhất, dùng để lấy dữ liệu từ một API endpoint.
+
+**Cách 1: Sử dụng `.then()` và `.catch()`**
+
+```javascript
+axios.get('https://api.example.com/users')
+  .then(function (response) {
+    // Xử lý khi yêu cầu thành công
+    console.log('Dữ liệu:', response.data);
+    console.log('Trạng thái:', response.status); // Ví dụ: 200
+  })
+  .catch(function (error) {
+    // Xử lý khi có lỗi
+    console.error('Đã xảy ra lỗi!', error);
+  })
+  .finally(function () {
+    // Luôn luôn được thực thi (dù thành công hay thất bại)
+    console.log('Yêu cầu đã hoàn tất.');
+  });
+```
+
+  * `response.data`: Chứa dữ liệu trả về từ server (thường là một object hoặc array).
+  * `response.status`: Chứa mã trạng thái HTTP (ví dụ: 200 cho thành công, 404 cho không tìm thấy).
+
+**Cách 2: Sử dụng `async/await` (cú pháp hiện đại và dễ đọc hơn)**
+
+```javascript
+async function fetchUsers() {
+  try {
+    const response = await axios.get('https://api.example.com/users');
+    console.log('Dữ liệu:', response.data);
+  } catch (error) {
+    console.error('Đã xảy ra lỗi!', error);
+  }
+}
+
+fetchUsers();
+```
+
+#### b. Yêu cầu POST (Gửi dữ liệu mới)
+
+Dùng để tạo một tài nguyên mới trên server (ví dụ: tạo người dùng mới, đăng một bài viết).
+
+```javascript
+const newUser = {
+  firstName: 'Fred',
+  lastName: 'Flintstone',
+  email: 'fred@example.com'
+};
+
+axios.post('https://api.example.com/users', newUser)
+  .then(function (response) {
+    console.log('Tạo người dùng thành công:', response.data);
+  })
+  .catch(function (error) {
+    console.error('Lỗi khi tạo người dùng:', error);
+  });
+```
+
+  * Đối số thứ hai của `axios.post()` là đối tượng dữ liệu bạn muốn gửi đi.
+
+#### c. Yêu cầu PUT / PATCH (Cập nhật dữ liệu)
+
+  * **PUT**: Cập nhật toàn bộ tài nguyên.
+  * **PATCH**: Cập nhật một phần của tài nguyên.
+
+<!-- end list -->
+
+```javascript
+const updatedData = {
+  lastName: 'Rubble'
+};
+
+// Cập nhật người dùng có ID là 123
+axios.patch('https://api.example.com/users/123', updatedData)
+  .then(response => {
+    console.log('Cập nhật thành công:', response.data);
+  })
+  .catch(error => {
+    console.error('Lỗi cập nhật:', error);
+  });
+```
+
+#### d. Yêu cầu DELETE (Xóa dữ liệu)
+
+```javascript
+// Xóa người dùng có ID là 123
+axios.delete('https://api.example.com/users/123')
+  .then(response => {
+    console.log('Đã xóa thành công. Trạng thái:', response.status);
+  })
+  .catch(error => {
+    console.error('Lỗi khi xóa:', error);
+  });
+```
+
+### 3\. Các cấu hình nâng cao
+
+#### a. Tạo một "instance" của Axios
+
+Trong một ứng dụng lớn, bạn thường xuyên gọi đến cùng một API với các cấu hình chung (ví dụ: `baseURL`, `headers`). Việc tạo một instance giúp bạn không phải lặp lại code.
+
+```javascript
+// api.js
+import axios from 'axios';
+
+const apiClient = axios.create({
+  baseURL: 'https://api.example.com',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_TOKEN_HERE' // Thêm token xác thực
+  }
+});
+
+export default apiClient;
+```
+
+Bây giờ, ở một file khác, bạn có thể sử dụng instance này:
+
+```javascript
+// usersComponent.js
+import apiClient from './api';
+
+async function fetchUsers() {
+  try {
+    // Chỉ cần gọi đường dẫn tương đối
+    const response = await apiClient.get('/users'); 
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+#### b. Interceptors (Bộ chặn)
+
+Đây là tính năng cực kỳ mạnh mẽ.
+
+  * **Request Interceptor**: Can thiệp *trước khi* một yêu cầu được gửi đi.
+  * **Response Interceptor**: Can thiệp *trước khi* `then` hoặc `catch` được gọi.
+
+**Ví dụ:** Tự động thêm token xác thực vào mọi yêu cầu và xử lý lỗi 401 (Unauthorized) một cách tập trung.
+
+```javascript
+// Lấy token từ localStorage (ví dụ)
+const token = localStorage.getItem('accessToken');
+
+// 1. Request Interceptor
+apiClient.interceptors.request.use(config => {
+  // Thêm token vào header của mỗi request nếu token tồn tại
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
+// 2. Response Interceptor
+apiClient.interceptors.response.use(response => {
+  // Bất kỳ mã trạng thái nào nằm trong khoảng 2xx sẽ đi vào đây
+  return response;
+}, error => {
+  // Bất kỳ mã trạng thái nào nằm ngoài khoảng 2xx sẽ đi vào đây
+  if (error.response && error.response.status === 401) {
+    // Xử lý lỗi 401: ví dụ chuyển hướng đến trang đăng nhập
+    console.log('Token hết hạn hoặc không hợp lệ. Đang chuyển hướng...');
+    window.location.href = '/login';
+  }
+  return Promise.reject(error);
+});
+```
+
+### Tổng kết
+
+Axios là một công cụ không thể thiếu cho các nhà phát triển JavaScript hiện đại. Nó đơn giản hóa việc tương tác với các API, giúp mã nguồn của bạn sạch sẽ, dễ đọc và dễ bảo trì hơn. Bắt đầu với các yêu cầu cơ bản như `GET` và `POST`, sau đó khám phá các tính năng nâng cao như `instance` và `interceptors` sẽ giúp bạn xây dựng các ứng dụng mạnh mẽ và hiệu quả.
